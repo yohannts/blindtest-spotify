@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Sound from 'react-sound';
+import { Button } from 'react-bootstrap';
 
-const apiToken = 'BQBeEs8MqaKQLZXeVw8Av7BNRKvmimJ6jAS0fXQKL4Gs8pI_WX_N6UiAjVQ9isxJIS1M5fNHxqP8ZXIOGmbzuIlWoKWekEwsWQsvpTUH4F17tu9awJeKa3QpuNB5P7fRqX_K8rwUwwwI_m1qredSHZtF05aIPaE';
+const apiToken = 'BQDlhXMZgnH5tuNlCX120UXoZOd81RPaeSCg9YHtlMkiH92KmLm2Ll4dIzbkCGG1urqlcaC0EtWpQNlfqLqQt858-l-_pqGICR5WUizAOtJ0U5_LMoK7Rt2VXf33BTEuJxeOdBIjW2JcRi6j9iPMv6QUsOqQv6A';
 
 class TrackImage extends Component {
   render() {
@@ -19,7 +20,7 @@ class App extends Component {
     super();
     this.state = {
       tracks: [],
-      currentTrack: null,
+      currentTrackId: null,
     };
   }
 
@@ -34,7 +35,7 @@ class App extends Component {
       .then((data) => {
         this.setState({
           tracks: data.items,
-          currentTrack: data.items[0]
+          currentTrackId: 0
         });
       });
   }
@@ -46,11 +47,19 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo"/>
           <h1 className="App-title">Welcome to your Blindtest</h1>
         </header>
-        <main className="App-intro">
+        <main className="App-images">
           Chargement...
         </main>
       </div>);
     }
+
+    const currentTrackId = this.state.currentTrackId;
+    const nextTrackId = (this.state.currentTrackId + 1) % this.state.tracks.length;
+    const next2TrackId = (this.state.currentTrackId + 2) % this.state.tracks.length;
+
+    const currentTrack = this.state.tracks[currentTrackId];
+    const nextTrack = this.state.tracks[nextTrackId];
+    const next2Track = this.state.tracks[next2TrackId];
 
     return (
       <div className="App">
@@ -58,12 +67,15 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo"/>
           <h1 className="App-title">Welcome to your Blindtest</h1>
         </header>
-        <main className="App-intro">
-          <Sound url={this.state.currentTrack.track.preview_url} playStatus={Sound.status.PLAYING}/>
-          {
-            this.state.tracks.map(track => <TrackImage track={track.track}/>)
-          }
-        </main>
+        <div className="App-images">
+          <Sound url={currentTrack.track.preview_url} playStatus={Sound.status.PLAYING}/>
+          <TrackImage track={currentTrack.track}/>
+        </div>
+        <div className="App-buttons">
+          <Button>{currentTrack.track.name}</Button>
+          <Button>{nextTrack.track.name}</Button>
+          <Button>{next2Track.track.name}</Button>
+        </div>
       </div>
     );
   }

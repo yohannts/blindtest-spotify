@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import loading from './loading.svg';
 import './App.css';
 import Sound from 'react-sound';
 import Button from './Button';

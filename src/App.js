@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Sound from 'react-sound';
-import { Button } from 'react-bootstrap';
+import Button from './Button';
 
 const apiToken = 'BQBP5T8Gt100cZen_cpFoJ1usk9f4Bgk5iQ3H_KFp5HmL4JQjTWNRU10t5Axj2Nd7wdXes0J6WGc9A1BJo0MZkyCEIjr6VstoIBRB01swe9nBiutmAPwjC9QEbtHTA_7lcc5AAp-ZwUmmyYVgIRXjnNBM3eRQ5c';
 

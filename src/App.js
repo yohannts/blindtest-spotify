@@ -6,7 +6,7 @@ import './App.css';
 import Sound from 'react-sound';
 import { Button } from 'react-bootstrap';
 
-const apiToken = 'BQDlhXMZgnH5tuNlCX120UXoZOd81RPaeSCg9YHtlMkiH92KmLm2Ll4dIzbkCGG1urqlcaC0EtWpQNlfqLqQt858-l-_pqGICR5WUizAOtJ0U5_LMoK7Rt2VXf33BTEuJxeOdBIjW2JcRi6j9iPMv6QUsOqQv6A';
+const apiToken = 'BQBP5T8Gt100cZen_cpFoJ1usk9f4Bgk5iQ3H_KFp5HmL4JQjTWNRU10t5Axj2Nd7wdXes0J6WGc9A1BJo0MZkyCEIjr6VstoIBRB01swe9nBiutmAPwjC9QEbtHTA_7lcc5AAp-ZwUmmyYVgIRXjnNBM3eRQ5c';
 
 class TrackImage extends Component {
   render() {
@@ -34,10 +34,20 @@ class App extends Component {
 
   guessTrack(trackId) {
     if (trackId === this.state.currentTrackId) {
-      swal('Bravo !', 'Tu as gagné', 'success');
+      swal('Bravo !', 'Tu as gagné', 'success').then(this.initState.bind(this));
     } else {
-      swal ('Essaye encore', 'Ce n est pas la bonne', 'error');
+      swal ('Essaye encore', 'Ce n est pas la bonne réponse', 'error');
     }
+  }
+
+  initState() {
+    const tracks = this.state.tracks;
+    const trackIndex = App.getRandomNumber(tracks.length);
+
+    this.setState({
+      currentTrackIndex: trackIndex,
+      currentTrackId: tracks[trackIndex].track.id,
+    });
   }
 
   componentDidMount() {

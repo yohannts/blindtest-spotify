@@ -27,6 +27,11 @@ class App extends Component {
     };
   }
 
+  /* Return a random number between 0 included and x excluded */
+  static getRandomNumber(x) {
+    return Math.floor(Math.random() * x);
+  }
+
   guessTrack(trackId) {
     if (trackId === this.state.currentTrackId) {
       swal('Bravo !', 'Tu as gagné', 'success');
@@ -44,10 +49,12 @@ class App extends Component {
     })
       .then(response => response.json())
       .then((data) => {
+        const trackIndex = App.getRandomNumber(data.items.length);
+
         this.setState({
           tracks: data.items,
-          currentTrackIndex: 0,
-          currentTrackId: data.items[0].track.id,
+          currentTrackIndex: trackIndex,
+          currentTrackId: data.items[trackIndex].track.id,
         });
       });
   }
@@ -66,8 +73,8 @@ class App extends Component {
     }
 
     const currentTrackIndex = this.state.currentTrackIndex;
-    const nextTrackIndex = (this.state.currentTrackIndex + 1) % this.state.tracks.length;
-    const next2TrackIndex = (this.state.currentTrackIndex + 2) % this.state.tracks.length;
+    const nextTrackIndex = App.getRandomNumber(this.state.tracks.length);
+    const next2TrackIndex = App.getRandomNumber(this.state.tracks.length);
 
     const currentTrack = this.state.tracks[currentTrackIndex];
     const nextTrack = this.state.tracks[nextTrackIndex];

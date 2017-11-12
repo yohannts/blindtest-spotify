@@ -32,22 +32,51 @@ class App extends Component {
 
   constructor() {
     super();
+    this.state = {
+      tracks: null,
+      tracksLoaded: false,
+    };
+  }
+
+  componentDidMount() {
+    fetch('https://api.spotify.com/v1/me/tracks', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + apiToken,
+      },
+    })
+      .then(response => response.json())
+      .then((data) => {
+        this.setState({
+          tracks: data.items,
+          tracksLoaded: true,
+        });
+      });
   }
 
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <h1 className="App-title">Bienvenue sur le Blindtest</h1>
-        </header>
-        <div className="App-images">
-          <p>Il va falloir modifier le code pour faire un vrai Blindtest !</p>
+    if (!this.state.tracksLoaded) {
+      return (
+        <div className="App">
+          <img src={loading} alt="Chargement en cours"/>
         </div>
-        <div className="App-buttons">
+      );
+    } else {
+      return (
+        <div className="App">
+          <header className="App-header">
+            <img src={logo} className="App-logo" alt="logo"/>
+            <h1 className="App-title">Bienvenue sur le Blindtest</h1>
+          </header>
+          <div className="App-images">
+            <p>Nous avons chargé {this.state.tracks.length} chansons.</p>
+            <p>Titre de la première chanson : {this.state.tracks[0].track.name}.</p>
+          </div>
+          <div className="App-buttons">
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
 

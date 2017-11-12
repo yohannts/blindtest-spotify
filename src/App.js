@@ -1,3 +1,5 @@
+/*global swal*/
+
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -20,8 +22,17 @@ class App extends Component {
     super();
     this.state = {
       tracks: [],
+      currentTrackIndex: null,
       currentTrackId: null,
     };
+  }
+
+  guessTrack(trackId) {
+    if (trackId === this.state.currentTrackId) {
+      swal('Bravo !', 'Tu as gagné', 'success');
+    } else {
+      swal ('Essaye encore', 'Ce n est pas la bonne', 'error');
+    }
   }
 
   componentDidMount() {
@@ -35,7 +46,8 @@ class App extends Component {
       .then((data) => {
         this.setState({
           tracks: data.items,
-          currentTrackId: 0
+          currentTrackIndex: 0,
+          currentTrackId: data.items[0].track.id,
         });
       });
   }
@@ -53,13 +65,13 @@ class App extends Component {
       </div>);
     }
 
-    const currentTrackId = this.state.currentTrackId;
-    const nextTrackId = (this.state.currentTrackId + 1) % this.state.tracks.length;
-    const next2TrackId = (this.state.currentTrackId + 2) % this.state.tracks.length;
+    const currentTrackIndex = this.state.currentTrackIndex;
+    const nextTrackIndex = (this.state.currentTrackIndex + 1) % this.state.tracks.length;
+    const next2TrackIndex = (this.state.currentTrackIndex + 2) % this.state.tracks.length;
 
-    const currentTrack = this.state.tracks[currentTrackId];
-    const nextTrack = this.state.tracks[nextTrackId];
-    const next2Track = this.state.tracks[next2TrackId];
+    const currentTrack = this.state.tracks[currentTrackIndex];
+    const nextTrack = this.state.tracks[nextTrackIndex];
+    const next2Track = this.state.tracks[next2TrackIndex];
 
     return (
       <div className="App">
@@ -72,9 +84,9 @@ class App extends Component {
           <TrackImage track={currentTrack.track}/>
         </div>
         <div className="App-buttons">
-          <Button>{currentTrack.track.name}</Button>
-          <Button>{nextTrack.track.name}</Button>
-          <Button>{next2Track.track.name}</Button>
+          <Button onClick={() => this.guessTrack(currentTrack.track.id)}>{currentTrack.track.name}</Button>
+          <Button onClick={() => this.guessTrack(nextTrack.track.id)}>{nextTrack.track.name}</Button>
+          <Button onClick={() => this.guessTrack(next2Track.track.id)}>{next2Track.track.name}</Button>
         </div>
       </div>
     );

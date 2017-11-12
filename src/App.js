@@ -43,6 +43,7 @@ class App extends Component {
     this.state = {
       tracks: null,
       tracksLoaded: false,
+      currentTrack: null,
     };
   }
 
@@ -55,11 +56,23 @@ class App extends Component {
     })
       .then(response => response.json())
       .then((data) => {
+        const randomIndex = getRandomNumber(data.items.length);
+        const currentTrack = data.items[randomIndex];
+
         this.setState({
           tracks: data.items,
           tracksLoaded: true,
+          currentTrack: currentTrack,
         });
       });
+  }
+
+  checkAnswer(track) {
+    if (track.track.id === this.state.currentTrack.track.id) {
+      swal('Bravo !', 'Tu as gagné', 'success');
+    } else {
+      swal('Essaye encore', 'Ce n’est pas la bonne réponse', 'error');
+    }
   }
 
   render() {
@@ -71,9 +84,15 @@ class App extends Component {
       );
     } else {
 
-      const track0 = this.state.tracks[0];
-      const track1 = this.state.tracks[1];
-      const track2 = this.state.tracks[2];
+      const randomIndex1 = getRandomNumber(this.state.tracks.length);
+      const randomIndex2 = getRandomNumber(this.state.tracks.length);
+
+      const track0 = this.state.currentTrack;
+      const track1 = this.state.tracks[randomIndex1];
+      const track2 = this.state.tracks[randomIndex2];
+
+      const tracks = [track0, track1, track2];
+      const shuffledTracks = shuffleArray(tracks);
 
       return (
         <div className="App">
@@ -86,9 +105,11 @@ class App extends Component {
             <Sound url={track0.track.preview_url} playStatus={Sound.status.PLAYING}/>
           </div>
           <div className="App-buttons">
-            <Button>{track0.track.name}</Button>
-            <Button>{track1.track.name}</Button>
-            <Button>{track2.track.name}</Button>
+            {
+              shuffledTracks.map(track => (
+                <Button onClick={() => this.checkAnswer(track)}>{track.track.name}</Button>
+              ))
+            }
           </div>
         </div>
       );

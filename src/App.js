@@ -8,6 +8,11 @@ import Button from './Button';
 
 const apiToken = 'BQBP5T8Gt100cZen_cpFoJ1usk9f4Bgk5iQ3H_KFp5HmL4JQjTWNRU10t5Axj2Nd7wdXes0J6WGc9A1BJo0MZkyCEIjr6VstoIBRB01swe9nBiutmAPwjC9QEbtHTA_7lcc5AAp-ZwUmmyYVgIRXjnNBM3eRQ5c';
 
+/* Return a random number between 0 included and x excluded */
+function getRandomNumber(x) {
+  return Math.floor(Math.random() * x);
+}
+
 class TrackImage extends Component {
   render() {
     const src = this.props.track.album.images[1].url;
@@ -27,11 +32,6 @@ class App extends Component {
     };
   }
 
-  /* Return a random number between 0 included and x excluded */
-  static getRandomNumber(x) {
-    return Math.floor(Math.random() * x);
-  }
-
   guessTrack(trackId) {
     if (trackId === this.state.currentTrackId) {
       swal('Bravo !', 'Tu as gagné', 'success').then(this.initState.bind(this));
@@ -42,7 +42,7 @@ class App extends Component {
 
   initState() {
     const tracks = this.state.tracks;
-    const trackIndex = App.getRandomNumber(tracks.length);
+    const trackIndex = getRandomNumber(tracks.length);
 
     this.setState({
       currentTrackIndex: trackIndex,
@@ -59,7 +59,7 @@ class App extends Component {
     })
       .then(response => response.json())
       .then((data) => {
-        const trackIndex = App.getRandomNumber(data.items.length);
+        const trackIndex = getRandomNumber(data.items.length);
 
         this.setState({
           tracks: data.items,
@@ -83,8 +83,8 @@ class App extends Component {
     }
 
     const currentTrackIndex = this.state.currentTrackIndex;
-    const nextTrackIndex = App.getRandomNumber(this.state.tracks.length);
-    const next2TrackIndex = App.getRandomNumber(this.state.tracks.length);
+    const nextTrackIndex = getRandomNumber(this.state.tracks.length);
+    const next2TrackIndex = getRandomNumber(this.state.tracks.length);
 
     const currentTrack = this.state.tracks[currentTrackIndex];
     const nextTrack = this.state.tracks[nextTrackIndex];

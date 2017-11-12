@@ -28,6 +28,14 @@ function getRandomNumber(x) {
   return Math.floor(Math.random() * x);
 }
 
+class AlbumCover extends Component {
+  render() {
+    const src = this.props.track.album.images[0].url;
+    const alt = 'Album cover for ' + this.props.track.album.name;
+    return (<img src={src} alt={alt} style={{ width: 400, height: 400 }}/>);
+  }
+}
+
 class App extends Component {
 
   constructor() {
@@ -62,6 +70,11 @@ class App extends Component {
         </div>
       );
     } else {
+
+      const track0 = this.state.tracks[0];
+      const track1 = this.state.tracks[1];
+      const track2 = this.state.tracks[2];
+
       return (
         <div className="App">
           <header className="App-header">
@@ -69,10 +82,13 @@ class App extends Component {
             <h1 className="App-title">Bienvenue sur le Blindtest</h1>
           </header>
           <div className="App-images">
-            <p>Nous avons chargé {this.state.tracks.length} chansons.</p>
-            <p>Titre de la première chanson : {this.state.tracks[0].track.name}.</p>
+            <AlbumCover track={track0.track}/>
+            <Sound url={track0.track.preview_url} playStatus={Sound.status.PLAYING}/>
           </div>
           <div className="App-buttons">
+            <Button>{track0.track.name}</Button>
+            <Button>{track1.track.name}</Button>
+            <Button>{track2.track.name}</Button>
           </div>
         </div>
       );

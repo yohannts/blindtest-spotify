@@ -33,6 +33,7 @@ const App = () => {
   const [tracks, setTracks] = useState();
   const [songsLoaded, setSongsLoaded] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(null);
+  let timeout;
   useEffect(() => {
     fetch('https://api.spotify.com/v1/playlists/1wCB2uVwBCIbJA9rar5B77/tracks', {
       method: 'GET',
@@ -49,18 +50,31 @@ const App = () => {
       });
   }, []);
 
+  useEffect(() => {
+    timeout = setTimeout(() => getNewTrack(), 30000);
+  });
+
   const checkAnswer = (id) => {
     if (currentTrack.id === id) {
-      swal('Bravo !', 'Tu as gagné', 'success');
+      clearTimeout(timeout);
+      swal('Bravo !', 'Tu as gagné', 'success').then(() => getNewTrack());
     } else {
       swal('Essaye encore', 'Ce n’est pas la bonne réponse', 'error');
     }
   };
 
+  const getNewTrack = () => {
+    if (!tracks) {
+      return;
+    }
+    const randomIndex = getRandomNumber(tracks.length);
+    setCurrentTrack(tracks[randomIndex].track);
+  };
+
   if (!songsLoaded) {
     return (
       <div className="App">
-        <img src={logo} className="App-logo" alt="logo"/>
+        <img src={loading} className="App-logo" alt="logo"/>
       </div>
     );
   }

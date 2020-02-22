@@ -32,6 +32,7 @@ function getRandomNumber(x) {
 const App = () => {
   const [tracks, setTracks] = useState();
   const [songsLoaded, setSongsLoaded] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(null);
   useEffect(() => {
     fetch('https://api.spotify.com/v1/playlists/1wCB2uVwBCIbJA9rar5B77/tracks', {
       method: 'GET',
@@ -42,9 +43,19 @@ const App = () => {
       .then(response => response.json())
       .then((data) => {
         setTracks(data.items);
+        const randomIndex = getRandomNumber(data.items.length);
+        setCurrentTrack(data.items[randomIndex].track);
         setSongsLoaded(true);
       });
   }, []);
+
+  const checkAnswer = (id) => {
+    if (currentTrack.id === id) {
+      swal('Bravo !', 'Tu as gagné', 'success');
+    } else {
+      swal('Essaye encore', 'Ce n’est pas la bonne réponse', 'error');
+    }
+  };
 
   if (!songsLoaded) {
     return (
@@ -54,9 +65,14 @@ const App = () => {
     );
   }
 
-  const track1 = tracks[0].track;
-  const track2 = tracks[1].track;
-  const track3 = tracks[2].track;
+  const randomIndex1 = getRandomNumber(tracks.length);
+  const randomIndex2 = getRandomNumber(tracks.length);
+
+  const track1 = currentTrack;
+  const track2 = tracks[randomIndex1].track;
+  const track3 = tracks[randomIndex2].track;
+
+  const propositions = shuffleArray([track1, track2, track3]);
 
   return (
     <div className="App">
@@ -69,9 +85,9 @@ const App = () => {
         <Sound url={track1.preview_url} playStatus={Sound.status.PLAYING}/>
       </div>
       <div className="App-buttons">
-        <Button>{track1.name}</Button>
-        <Button>{track2.name}</Button>
-        <Button>{track3.name}</Button>
+        {propositions.map(track =>
+          <Button onClick={() => checkAnswer(track.id)}>{track.name}</Button>
+        )}
       </div>
     </div>
   );

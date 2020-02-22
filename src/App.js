@@ -1,6 +1,6 @@
 /*global swal*/
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import loading from './loading.svg';
 import './App.css';
@@ -29,6 +29,30 @@ function getRandomNumber(x) {
 }
 
 const App = () => {
+  const [tracks, setTracks] = useState();
+  const [songsLoaded, setSongsLoaded] = useState(false);
+  useEffect(() => {
+    fetch('https://api.spotify.com/v1/playlists/1wCB2uVwBCIbJA9rar5B77/tracks', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + apiToken,
+      },
+    })
+      .then(response => response.json())
+      .then((data) => {
+        setTracks(data.items);
+        setSongsLoaded(true);
+      });
+  }, []);
+
+  if (!songsLoaded) {
+    return (
+      <div className="App">
+        <img src={loading} className="App-logo" alt="logo"/>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -36,7 +60,8 @@ const App = () => {
         <h1 className="App-title">Bienvenue sur le Blindtest</h1>
       </header>
       <div className="App-images">
-        <p>Il va falloir modifier le code pour faire un vrai Blindtest !</p>
+        <p>Nous avons chargé {tracks.length} chansons.</p>
+        <p>Titre de la première chanson : {tracks[0].track.name}.</p>
       </div>
       <div className="App-buttons">
       </div>

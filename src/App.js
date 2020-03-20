@@ -1,6 +1,6 @@
 /*global swal*/
 
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import loading from './loading.svg';
 import './App.css';
@@ -28,27 +28,20 @@ function getRandomNumber(x) {
   return Math.floor(Math.random() * x);
 }
 
-class App extends Component {
-
-  constructor() {
-    super();
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <h1 className="App-title">Bienvenue sur le Blindtest</h1>
-        </header>
-        <div className="App-images">
-          <p>Il va falloir modifier le code pour faire un vrai Blindtest !</p>
-        </div>
-        <div className="App-buttons">
-        </div>
+const App = () => {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo"/>
+        <h1 className="App-title">Bienvenue sur le Blindtest</h1>
+      </header>
+      <div className="App-images">
+        <p>Il va falloir modifier le code pour faire un vrai Blindtest !</p>
       </div>
-    );
-  }
+      <div className="App-buttons">
+      </div>
+    </div>
+  );
 }
 
 export default App;

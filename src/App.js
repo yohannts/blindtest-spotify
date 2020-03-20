@@ -32,7 +32,7 @@ const App = () => {
   const [tracks, setTracks] = useState();
   const [songsLoaded, setSongsLoaded] = useState(false);
   useEffect(() => {
-    fetch('https://api.spotify.com/v1/playlists/1wCB2uVwBCIbJA9rar5B77/tracks', {
+    fetch(`https://api.spotify.com/v1/me/tracks`, {
       method: 'GET',
       headers: {
         Authorization: 'Bearer ' + apiToken,

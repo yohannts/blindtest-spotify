@@ -53,7 +53,7 @@ const App = () => {
     }), []);
 
   React.useEffect(() => {
-    setTimeoutId(setTimeout(() => getNewTrack(), 500));
+    setTimeoutId(setTimeout(() => getNewTrack(), 30000));
   }, [track1]);
 
   function checkAnswer(Id1, Id2) {

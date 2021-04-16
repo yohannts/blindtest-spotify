@@ -8,7 +8,7 @@ import Sound from 'react-sound';
 import Button from './Button';
 import { useState } from 'react';
 
-const apiToken = 'BQDvNv0m2Xy7bS6NvmPhe06z0Xs2z4ntN59tbDqDw0NJaBWDOGYjJlYabGRoHMeAcyHdEVMPkxImq7l75GL-Jxzv_VxTAbBIpLVYbWh_kH54HZTP3rDgJg_lLK4LV91gyiMmT7_tmYeGOCpeenbE-Ro_U2d5QJa3pDGKZPgWcoXBvRRa';
+const apiToken = 'Spotify-key';
 
 function shuffleArray(array) {
   let counter = array.length;
